@@ -38,9 +38,6 @@ public class Reservation {
     @Column(nullable = false)
     private Double roomPrice;
 
-    @Column(nullable = false)
-    private Boolean foodIncluded;
-
     @Column()
     private Double foodPrice;
 

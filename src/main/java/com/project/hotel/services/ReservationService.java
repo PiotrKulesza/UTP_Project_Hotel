@@ -46,11 +46,13 @@ public class ReservationService implements IReservationService{
     }
 
     @Override
-    public void postReservation(Reservation reservation) {
-
-
-
+    public void postReservation(String roomId, String userId, Reservation reservation) {
+        reservation.setUser(userRepository.findById(userId).get());
+        reservation.setRoom(roomRepository.findById(roomId).get());
+        reservationRepository.save(reservation);
     }
+
+
 
     @Override
     public void putReservation(Reservation reservation) {

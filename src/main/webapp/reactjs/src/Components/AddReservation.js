@@ -3,6 +3,8 @@ import {Button, Card, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSave, faUndo} from '@fortawesome/free-solid-svg-icons'
+import { withRouter } from "react-router-dom";
+import DatePicker from "react-datepicker";
 
 class AddReservation extends React.Component {
 
@@ -11,12 +13,15 @@ class AddReservation extends React.Component {
         this.state = this.initialState
 
         this.valueChange = this.valueChange.bind(this)
-        this.submitRoom = this.submitRoom.bind(this)
-        this.resetRoom = this.resetRoom.bind(this)
+        this.submitReservation = this.submitReservation.bind(this)
+        this.resetReservation = this.resetReservation.bind(this)
     }
 
     initialState = {
-        userId
+        userId: this.state.user = localStorage.getItem('loggedUser'),
+        roomId: this.props.match.params.roomId,
+        startDate: new Date(),
+        days: 0,
         name:'',
         pricePerNight:'',
         priceForFood:'',
@@ -25,14 +30,14 @@ class AddReservation extends React.Component {
         description:''
     }
 
-    submitRoom (event) {
+    submitReservation (event) {
 
 
         const params = new URLSearchParams();
-        params.append('name',this.state.name);
-        params.append('pricePerNight',this.state.pricePerNight);
-        params.append('priceForFood',this.state.priceForFood);
-        params.append('maxAmountOfBeds',this.state.maxAmountOfBeds);
+        params.append('userId',this.state.userId);
+        params.append('roomId',this.state.roomId);
+        params.append('endtDate',new Date(this.state.startDate + this.state.days * 86400000 ));
+        params.append('roomPrice',);
         params.append('type',this.state.type);
         params.append('description',this.state.description);
 
@@ -46,9 +51,12 @@ class AddReservation extends React.Component {
         event.preventDefault();
     }
 
-    resetRoom  ()  {
-        this.setState(() => this.initialState)
+    componentDidMount() {
+
+        axios.get()
+
     }
+
 
     valueChange  (event){
         this.setState({
@@ -60,7 +68,7 @@ class AddReservation extends React.Component {
         return(
             <Card className="border border-dark bg-dark text-white">
                 <Card.Header>Dodaj pokój</Card.Header>
-                <Form onReset={this.resetRoom} onSubmit={this.submitRoom} id={"registerFormId"}>
+                <Form onSubmit={this.submitReservation} id={"registerFormId"}>
                     <Card.Body>
 
                         <Form.Row>
@@ -185,4 +193,4 @@ class AddReservation extends React.Component {
 
 }
 
-export default AddReservation;
+export default withRouter(AddReservation);
