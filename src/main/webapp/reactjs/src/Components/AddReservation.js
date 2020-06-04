@@ -22,6 +22,7 @@ class AddReservation extends React.Component {
         roomId: this.props.match.params.roomId,
         startDate: new Date(),
         days: 0,
+        room:{},
         name:'',
         pricePerNight:'',
         priceForFood:'',
@@ -37,9 +38,9 @@ class AddReservation extends React.Component {
         params.append('userId',this.state.userId);
         params.append('roomId',this.state.roomId);
         params.append('endtDate',new Date(this.state.startDate + this.state.days * 86400000 ));
-        params.append('roomPrice',);
-        params.append('type',this.state.type);
-        params.append('description',this.state.description);
+        params.append('roomPrice',this.state.days*this.state.room.pricePerNight);
+        params.append('foodPrice',this.state.days*this.state.room.priceForFood);
+        params.append('totalPrice',this.state.description);
 
 
         axios({
@@ -53,7 +54,12 @@ class AddReservation extends React.Component {
 
     componentDidMount() {
 
-        axios.get()
+        axios.get("http://localhost:8080/getRoomById",{
+            roomId:this.state.roomId
+        }).then(response => response.data)
+            .then((data) =>{
+                this.setState({room: data});
+            });
 
     }
 
